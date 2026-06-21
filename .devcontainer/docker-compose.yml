@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+
+  api:
+    build: ./apps/api
+    ports:
+      - "8000:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+  web:
+    build: ./apps/web
+    ports:
+      - "3000:3000"
+    command: npm run dev
+
+  detector:
+    build: ./apps/detector
+    depends_on:
+      - api
+    volumes:
+      - /dev/video0:/dev/video0   # Linuxの場合
